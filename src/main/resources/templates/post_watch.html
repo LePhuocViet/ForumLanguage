@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Forum Language</title>
+    <link rel="icon" th:href="@{/img/F.png}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/font/fontawesome-free-6.4.0-web/css/all.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap}" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is included -->
+
+</head>
+<body>
+<div class="app">
+    <div class="header">
+        <div class="grid">
+            <div class="header__nav-top">
+                <nav class="header__nav">
+                    <ul class="header__nav-list">
+
+                        <li class="header__nav-list-img header__nav-list-item--cursor ">
+                            <img th:src="@{/img/F.png}" class="header__logo-img"></img>
+
+                        </li>
+                        <li class="header__nav-list-name header__nav-list-item--cursor ">
+                            <h2 class="header__nav-list-title"><a class="header__nav-list-title" th:href="@{/Home}"> FORUM LANGUAGES</a></h2>
+                        </li>
+
+                    </ul>
+                    <ul class="header__nav-list header__nav-list-flex">
+                        <form id="search" th:action="@{/Search}" method="get">
+                            <div class="header__nav-search">
+                                <i class="fa-solid fa-magnifying-glass header__nav-search-icon"></i>
+                                <input  id="inputField" name="title" onkeydown="checkEnter(event)" type="text" placeholder="Search Post" class="header__nav-list-search">
+                            </div>
+                        </form>
+                    </ul>
+                    <ul class="header__nav-list">
+                        <form th:action="@{/Post}" method="Get">
+                            <button class="header__nav-list-post header__nav-list-item--cursor">
+                                <i class="fa-regular fa-add header__nav-post-icon"></i>
+                                <span>Create</span>
+                            </button>
+                        </form>
+
+                        <li class="header__nav-list-bell header__nav-list-item--cursor">
+
+                            <i class="header__nav-icon fa-regular fa-bell"></i>
+                        </li>
+                        <li class="header__nav-list-account" th:if="${userIn}">
+                            <img src="./img/F.png" class="header__account-avatar header__nav-list-account header__nav-icon" alt="">
+                            <ul class="header__account-list header__nav-list-item--cursor">
+                                <li class="header__account-list-item">
+                                    <i class="fa-regular fa-user header__account-icon"></i>
+                                    <button class="header__account-item-link" type="button">View Profile</button>
+                                </li>
+                                <li class="header__account-list-item">
+                                    <i class="fa-regular fa-star header__account-icon"></i>
+                                    <button class="header__account-item-link" type="button">Membership Account</button>
+                                </li>
+                                <form th:action="@{/Setting}" method="Get">
+                                    <li class="header__account-list-item">
+                                        <i class="fa-solid fa-gear header__account-icon"></i>
+                                        <button class="header__account-item-link" >Settings</button>
+                                    </li>
+                                </form>
+                                <li class="header__account-list-item">
+                                    <i class="fa-regular fa-face-grin-stars header__account-icon"></i>
+                                    <button class="header__account-item-link" type="button">Premium</button>
+                                </li>
+                                <form action="#" th:action="@{/logout}" method="POST">
+                                    <li class="header__account-list-item">
+
+                                        <i class="fa-solid fa-right-from-bracket header__account-icon"></i>
+                                        <button class="header__account-item-link" >Log Out</button>
+
+                                    </li>
+                                </form>
+                            </ul>
+                        </li>
+
+                        <li class="header__nav-button-list" th:unless="${userIn}">
+                            <div class="header__nav-button-login">
+                                <a th:href="@{http://localhost:8080/Login}" class="header__nav-button-login-title">Login</a>
+                            </div>
+                            <div class="header__nav-button-resign">
+                                <a th:href="@{http://localhost:8080/Register}" class="header__nav-button-resign-title">Register</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                </nav>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="grid">
+            <div class="grid__row-3">
+                <nav class="container__nav">
+                    <div class="container__nav-home">
+                        <ul class="container__nav-list">
+                            <li class="container__nav-item container__nav-home-item--select">
+                                <i class="container__nav-icon fa-solid fa-home"></i>
+                                <span class="container__nav-title">Home</span>
+                            </li>
+                            <li class="container__nav-item">
+                                <i class="container__nav-icon fa-solid fa-fire"></i>
+                                <span class="container__nav-title">Popular</span>
+                            </li>
+                            <li class="container__nav-item">
+                                <i class="container__nav-icon fa-solid fa-square-up-right"></i>
+                                <span class="container__nav-title">New</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="container__nav-kind">
+                        <span class="container__nav-title">
+                            LANGUAGES
+                        </span>
+                        <ul class="container__nav-list">
+                            <form th:action="@{/Sort}" method="get">
+                                <li th:classappend="${languageCss == 'English'} ? 'active'" class="container__nav-item">
+                                    <input type="hidden" name="language" th:value="English">
+                                    <i class="container__nav-icon fa-solid fa-newspaper"></i>
+                                    <button class="container__nav-title">English</button>
+                                </li>
+                            </form>
+                            <form th:action="@{/Sort}" method="get">
+                                <li th:classappend="${languageCss == 'China'} ? 'active'" class="container__nav-item">
+                                    <input type="hidden" name="language" th:value="China">
+                                    <i class="container__nav-icon fa-solid fa-newspaper"></i>
+                                    <button class="container__nav-title">China</button>
+                                </li>
+                            </form>
+                            <form th:action="@{/Sort}" method="get">
+                                <li th:classappend="${languageCss == 'Japan'} ? 'active'" class="container__nav-item">
+                                    <input type="hidden" name="language" th:value="Japan">
+                                    <i class="container__nav-icon fa-solid fa-newspaper"></i>
+                                    <button class="container__nav-title">Japan</button>
+                                </li>
+                            </form>
+                        </ul>
+                    </div>
+                    <div class="container__nav-about">
+                        <span class="container__nav-title">
+                            Other
+                        </span>
+                        <ul class="container__nav-list">
+                            <li class="container__nav-item">
+                                <i class="container__nav-icon fa-solid fa-address-card"></i>
+                                <span class="container__nav-title">About FL</span>
+                            </li>
+                            <li class="container__nav-item">
+                                <i class="container__nav-icon fa-solid fa-flag"></i>
+                                <span class="container__nav-title">Advertise</span>
+                            </li>
+                            <li class="container__nav-item">
+                                <i class="container__nav-icon fa-solid fa-question"></i>
+                                <span class="container__nav-title">Help</span>
+                            </li>
+                            <li class="container__nav-item">
+                                <i class="container__nav-icon fa-solid fa-scroll"></i>
+                                <span class="container__nav-title">Policy</span>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </nav>
+            </div>
+            <div class="grid__row-5">
+                <div class="container__content">
+                    <div class="container__content-post container__content-post-none">
+                        <div th:each="posts : ${postDto}">
+                        <div class="container__post-list">
+                            <div class="container__post-infor">
+                                <div  id="userWatch" th:data-user="${posts.usernumber}">
+                                <div class="container__post-infor-item">
+                                    <img class="container__infor-img" th:src="@{/img/F.png}" alt="">
+                                    <span class="container__infor-name" th:text="${posts.name}">Forum Language</span>
+                                    <span> - </span>
+                                    <span class="container__infor-time" th:text="${posts.timepost}">2 hours</span>
+                                    <span> - </span>
+                                    <span class="container__infor-language" th:text="${posts.language}">English</span>
+                                </div>
+                                </div>
+                                <div class="container__post-infor-item">
+                                    <i class="container__infor-more fa-solid fa-ellipsis"></i>
+                                </div>
+
+                            </div>
+
+
+                            <div class="container__post-header">
+                                <span class="container__header-title" th:text="${posts.title}">Help me</span>
+                            </div>
+                            <div class="container__post-content">
+                                <span class="container__content-title" th:utext="${posts.content}">
+                                    <br>Renovating the restaurant will attract more customers.<br>
+                                    A. Renovation <br>
+                                    B. Renovating <br>
+                                    C. Renovated <br>
+                                    D. To renovating</span>
+                            </div>
+
+                        </div>
+                            <form class="likeForm" th:action="@{/like-post}" method="POST">
+                                <input type="hidden" name="lp" th:value="${posts.postname}">
+                                <div th:each="detail : ${postsDetailList}">
+                                    <div th:if="${detail.postname == posts.postname}">
+                                        <div class="container__post-interact" th:with="isLiked=${postlike.contains(posts.postname)}">
+                                            <div th:if="${isLiked}">
+                                                <button class="container__interact-like likesubmit liked">
+                                                    <i class="container__interact-icon fa-solid fa-heart"></i>
+                                                    <span class="container__interact-number" th:text="${detail.likecount}">100</span>
+                                                </button>
+                                            </div>
+
+                                            <div th:unless="${isLiked}">
+
+                                                <button class="container__interact-like likesubmit">
+                                                    <i class="container__interact-icon fa-solid fa-heart"></i>
+                                                    <span class="container__interact-number" th:text="${detail.likecount}">100</span>
+                                                </button>
+                                            </div>
+                                            <div class="container__interact-comment " th:data-post="${posts.postname}">
+                                                <i class="container__interact-icon fa-solid fa-comment"></i>
+                                                <span class="container__interact-number" th:Text="${detail.commentcount}">100</span>
+                                            </div>
+                                            <!--  <div class="container__interact-share">
+                                                  <i class="container__interact-icon fa-solid fa-share" ></i>
+                                                  <span class="container__interact-number">100</span>
+                                              </div> -->
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </form>
+                            </div>
+                        <div class="container__post-comment">
+                            <div class="container__post-comment-list">
+                                <form id="commentForm" th:action="@{/Comment}" th:object="${newcomment}" method="POST">
+                                <div class="container__post-comment-add">
+                                    <input type="hidden" name="c" th:value="${newcomment.postname}"/>
+                                    <textarea class="container__post-comment-title" th:field="*{commentcontent}" placeholder="Add comment"></textarea>
+                                    <div class="container__post-comment-add-submit">
+                                       <!--  <span class="container__post-comment-add-cancel">Cancel</span>-->
+                                        <button class="container__post-comment-add-comment">Comment</button>
+                                    </div>
+                                </div>
+                                </form>
+                                <div class="load">
+
+                                <div  th:each="comment : ${commentDto}">
+                                <div class="container__post-comment-item">
+                                    <div class="container__post-comment-item-list">
+                                        <div class="container__post-comment-item-name">
+                                            <img src="./img/F.png" alt="" class="container__post-comment-item-img">
+                                            <span class="container__post-comment-item-title" th:text="${comment.name}">Forum Language</span>
+                                            <span > - </span>
+                                            <span class="container__post-comment-item-time" th:text="${comment.timecomment}">19:30</span>
+
+                                        </div>
+                                        <div class="container__post-comment-item-content">
+
+                                            <span class="container__post-comment-item-comment" th:text="${comment.commentcontent}">B i think that is true</span>
+                                        </div>
+
+                                        <div class="container__post-comment-more">
+
+                                                <span class="container__post-comment-more-like">Like</span>
+                                                <button id="replyButton" class="container__post-comment-more-reply">Reply</button>
+
+                                        </div>
+    <!--
+                                        <div class="container__post-comment-reply">
+                                            <form id="commentReply" th:action="@{/Reply}" th:object="${newcommentreply}" method="POST">
+                                            <input type="hidden"  name="cp" th:value="${newcommentreply.name}">
+                                                <input type="hidden" name="cr" th:value="${comment.commentnumber}">
+                                            <textarea class="container__post-comment-reply-title" th:field="*{commentcontent}" placeholder="Add Comment"></textarea>
+
+                                                <button class="container__post-comment-reply-submit">Comment</button>
+                                            </form>
+                                    </div>
+                                        <div class="loadreload">
+                                    <div th:each="commentre : ${commentDtore}">
+                                        <div th:if="${commentre.commentnumber == comment.commentnumber}">
+                                    <div class="container__post-comment-item-reply">
+                                        <div class="container__post-comment-item">
+                                            <div class="container__post-comment-item-list">
+                                                <div class="container__post-comment-item-name">
+                                                    <img src="./img/F.png" alt="" class="container__post-comment-item-img">
+                                                    <span class="container__post-comment-item-title" th:Text="${commentre.name}">Forum Language</span>
+                                                    <span > - </span>
+                                                    <span class="container__post-comment-item-time" th:Text="${commentre.timecomment}">19:30</span>
+
+                                                </div>
+                                                <div class="container__post-comment-item-content">
+                                                    <span class="container__post-comment-item-comment" th:Text="${commentre.commentcontent}">C i think that is true</span>
+                                                </div>
+                                                <div class="container__post-comment-more">
+                                                    <span class="container__post-comment-more-like">Like</span>
+                                                   <span class="container__post-comment-more-reply">Reply</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    </div>
+                                    </div>
+                                        -->
+                                </div>
+                                </div>
+                                    </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         <!--   <div class="grid__row-4">
+                <div class="container__top">
+                    <div class="container__top-board">
+                        <div class="container__board-list">
+                            <div class="container__board-title">Top Point</div>
+                            <div class="container__board-name">
+
+                                <div class="container__name-title">
+                                    <img class="container__name-img" src="./img/F.png" alt="">
+                                    <span class="container__name-content">Nguyen Van A</span>
+                                </div>
+
+                                <div class="container__name-point">
+                                    <span class="container__name-point-title">10000</span>
+                                </div>
+                            </div>
+
+                            <div class="container__board-name">
+
+                                <div class="container__name-title">
+                                    <img class="container__name-img" src="./img/F.png" alt="">
+                                    <span class="container__name-content">Nguyen Van A</span>
+                                </div>
+
+                                <div class="container__name-point">
+                                    <span class="container__name-point-title">10000</span>
+                                </div>
+                            </div>
+
+                            <div class="container__board-name">
+
+                                <div class="container__name-title">
+                                    <img class="container__name-img" src="./img/F.png" alt="">
+                                    <span class="container__name-content">Nguyen Van A</span>
+                                </div>
+
+                                <div class="container__name-point">
+                                    <span class="container__name-point-title">10000</span>
+                                </div>
+                            </div>
+                            <div class="container__board-name">
+
+                                <div class="container__name-title">
+                                    <img class="container__name-img" src="./img/F.png" alt="">
+                                    <span class="container__name-content">Nguyen Van A</span>
+                                </div>
+
+                                <div class="container__name-point">
+                                    <span class="container__name-point-title">10000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+    </div>
+</div>
+<script>
+
+
+
+</script>
+
+</body>
+
+<script>
+    $(document).ready(function() {
+    $('.container__post-comment-list').on('click', '.container__post-comment-more-reply', function(e)  {
+        e.preventDefault();
+        var replyContainer = $(this).closest('.container__post-comment-item-list').find('.container__post-comment-reply');
+        if (replyContainer.css('display') === "none") {
+            replyContainer.css('display', 'flex');
+            replyContainer.find('.container__post-comment-reply-title').focus();
+        } else {
+            replyContainer.css('display', 'none');
+        }
+    });
+});
+
+
+
+$(document).ready(function() {
+  $('#commentReply').submit(function(e) {
+      e.preventDefault();
+
+      $.ajax({
+          type: "POST",
+          url: $(this).attr('action'),
+          data: $(this).serialize(),
+          success: function(response) {
+              $('.loadreload').load(location.href + ' .loadreload');
+              $('.container__post-comment-reply-title').val('');
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+          }
+      });
+  });
+});
+
+
+$(document).ready(function() {
+  $('#commentForm').submit(function(e) {
+      e.preventDefault();
+
+      $.ajax({
+          type: "POST",
+          url: $(this).attr('action'),
+          data: $(this).serialize(),
+          success: function(response) {
+
+              $('.load').load(location.href + ' .load');
+
+              $('textarea.container__post-comment-title').val('');
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+          }
+      });
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+          const postInforItems = document.querySelectorAll('.container__post-infor-item');
+          postInforItems.forEach(function(postInfor) {
+              postInfor.addEventListener('click', function(event) {
+                  event.stopPropagation();
+                  const userWatch = this.closest('.container__post-list').querySelector('#userWatch');
+                  const usernumber = userWatch.getAttribute('data-user');
+                  const url = `/User?u=${usernumber}`;
+                  window.location.href = url;
+              });
+          });
+      });
+
+$(document).ready(function() {
+
+
+     $('.likesubmit').click(function(event) {
+         event.preventDefault();
+
+         const likeButton = $(this).closest('.container__interact-like');
+         const likeCountElement = likeButton.find('.container__interact-number');
+         let likeCount = parseInt(likeCountElement.text());
+
+             const defaultColor = '#e88989';
+            const originalColor = '#ffffff';
+         if (!likeButton.hasClass('liked')) {
+             likeButton.addClass('liked');
+             likeCount += 1;
+                 likeButton.css('background-color',defaultColor  );
+         } else {
+             likeButton.removeClass('liked');
+             likeCount -= 1;
+                likeButton.css('background-color', originalColor);
+         }
+
+
+         likeCountElement.text(likeCount);
+
+         $.ajax({
+             type: "POST",
+             url: $(this).closest('.likeForm').attr("action"),
+             data: $(this).closest('.likeForm').serialize(),
+             success: function(response) {
+             },
+             error: function(xhr, status, error) {
+                 console.error(xhr.responseText);
+             }
+         });
+     });
+       $('.container__interact-comment').click(function() {
+        const postname = $(this).data('post');
+        const url = `/Posts?p=${postname}`;
+        window.location.href = url;
+    });
+ });
+
+
+</script>
+</html>

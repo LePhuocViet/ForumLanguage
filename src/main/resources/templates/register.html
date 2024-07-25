@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Forum Language</title>
+    <link rel="icon" th:href="@{/img/F.png}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/font/fontawesome-free-6.4.0-web/css/all.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap}" rel="stylesheet" />
+    <script>
+
+        function sendEmail() {
+        var email = document.getElementById("emailInput").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/Send?email=" + email, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var message = xhr.responseText;
+                document.getElementById("errorMessage").innerText = message;
+            } else {
+                alert("Failed to send email");
+            }
+        };
+        xhr.send();
+    }
+
+    </script>
+
+</head>
+<body class="post_scoll">
+<div class="container">
+
+    <div class="container__login-list">
+        <div class="container__img">
+            <img class="container__img-logo" src="./img/F.png" alt="Login Image">
+        </div>
+        <div class="container__login">
+
+            <form class="container__login-form" th:action="@{/Authentication}" th:object="${newAccount}" method="POST">
+                <div class="container__login-form-name">
+                    <span class="container__login-form-title">Register</span>
+                </div>
+                <div class="container__login-name">
+                    <div class="notice" th:if="${param.error != null
+                    and ((param.error.contains('Username is exist')
+                     or param.error.contains('Username must be at least 5 characters long and at max 10'))
+                     or param.error.contains('Username is wrong'))
+                     }">
+                        <span class="error-message" th:text="${param.error}"></span>
+                    </div>
+                    <input class="container__login-name-input" type="text"  th:field="*{username}" name="username" placeholder="UserName" required>
+                </div>
+                <div class="container__login-password">
+                    <div class="notice" th:if="${param.error != null and (param.error.contains('Password must be at least 8 characters long and at max 20') or param.error.contains('Password is wrong'))}">
+                        <span class="error-message" th:text="${param.error}"></span>
+                    </div>
+                    <input  class="container__login-password-input" type="password"  th:field="*{password}" name="password" placeholder="PassWord" required >
+                </div>
+                <div class="container__login-password">
+                    <div class="notice" th:if="${param.error != null and param.error.contains('Password does not match')}">
+                        <span class="error-message" th:text="${param.error}"></span>
+                    </div>
+                    <input  class="container__login-password-input" type="password"  name="repassword" placeholder="RePassWord" required>
+                </div>
+                <div class="container__login-password">
+                    <div class="notice" th:if="${param.error != null and ((param.error.contains('Email is exist')
+                    or param.error.contains('Email is wrong')) or param.error.contains('Enter Email'))}">
+
+                    <span class="error-message" th:text="${param.error}"></span>
+                    </div>
+                    <input  id="emailInput" class="container__login-password-input" type="text"  name="email" placeholder="Email" required>
+                </div>
+
+                <div class="container__resign-email">
+                    <div class="notice">
+                    <span id="errorMessage" class="error-message"></span>
+                    </div>
+                    <div class="notice" th:if="${param.error != null and param.error.contains('Wrong Code')}">
+                        <span class="error-message" th:text="${param.error}"></span>
+                    </div>
+                    <div>
+                    <input  class="container__resign-email-input" type="text"  name="code" placeholder="Code" required>
+                    <a class="container__resign-email-send" onclick="sendEmail()">Send</a>
+                    </div>
+                </div>
+                <div class="notice" th:if="${param.error != null and param.error.contains('Too Many Wait 5 Minutes')}">
+                    <span class="error-message" th:text="${param.error}"></span>
+                </div>
+                <input class="container__login-submmit" type="submit" value="Register"></input>
+            </form>
+            <div class="container__login-more">
+                <span class="container__login-more-title">OR</span>
+            </div>
+            <form th:action="@{/Login}" method="get">
+            <button class="container__login-more-signin-button" type="submit">Login</button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

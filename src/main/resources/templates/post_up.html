@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <title>Forum Language</title>
+    <link rel="icon" href="./img/F.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/base.css"/>
+    <link rel="stylesheet" href="./css/style.css"/>
+    <link rel="stylesheet" href="./font/fontawesome-free-6.4.0-web/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+
+    <script>
+        function formatText(tag) {
+    var textarea = document.querySelector('.container__content-context-title');
+    var selectedText = document.getSelection().toString();
+
+    switch (tag) {
+        case 'bold':
+            document.execCommand('bold');
+            break;
+        case 'italic':
+            document.execCommand('italic');
+            break;
+        case 'underline':
+            document.execCommand('underline');
+            break;
+        default:
+            break;
+    }
+}
+    </script>
+</head>
+<body class="post_scoll">
+<div class="app ">
+    <div class="header">
+        <div class="grid">
+            <div class="header__nav-top">
+                <nav class="header__nav">
+                    <ul class="header__nav-list">
+
+                        <li class="header__nav-list-img header__nav-list-item--cursor ">
+                            <img src="./img/F.png" class="header__logo-img"></img>
+
+                        </li>
+                        <li class="header__nav-list-name header__nav-list-item--cursor ">
+                            <h2 class="header__nav-list-title"><a class="header__nav-list-title" th:href="@{/Home}"> FORUM LANGUAGES</a></h2>
+                        </li>
+
+                    </ul>
+                    <ul class="header__nav-list header__nav-list-flex">
+                        <form id="search" th:action="@{/Search}" method="get">
+                            <div class="header__nav-search">
+                                <i class="fa-solid fa-magnifying-glass header__nav-search-icon"></i>
+                                <input  id="inputField" name="title" onkeydown="checkEnter(event)" type="text" placeholder="Search Post" class="header__nav-list-search">
+                            </div>
+                        </form>
+                    </ul>
+                    <ul class="header__nav-list">
+                        <form th:action="@{/Post}" method="Get">
+                            <button class="header__nav-list-post header__nav-list-item--cursor">
+                                <i class="fa-regular fa-add header__nav-post-icon"></i>
+                                <span>Create</span>
+                            </button>
+                        </form>
+
+                        <li class="header__nav-list-bell header__nav-list-item--cursor">
+
+                            <i class="header__nav-icon fa-regular fa-bell"></i>
+                        </li>
+                        <li class="header__nav-list-account" th:if="${userIn}">
+                            <img src="./img/F.png" class="header__account-avatar header__nav-list-account header__nav-icon" alt="">
+                            <ul class="header__account-list header__nav-list-item--cursor">
+                                <li class="header__account-list-item">
+                                    <i class="fa-regular fa-user header__account-icon"></i>
+                                    <button class="header__account-item-link" type="button">View Profile</button>
+                                </li>
+                                <li class="header__account-list-item">
+                                    <i class="fa-regular fa-star header__account-icon"></i>
+                                    <button class="header__account-item-link" type="button">Membership Account</button>
+                                </li>
+                                <form th:action="@{/Setting}" method="Get">
+                                    <li class="header__account-list-item">
+                                        <i class="fa-solid fa-gear header__account-icon"></i>
+                                        <button class="header__account-item-link" >Settings</button>
+                                    </li>
+                                </form>
+                                <li class="header__account-list-item">
+                                    <i class="fa-regular fa-face-grin-stars header__account-icon"></i>
+                                    <button class="header__account-item-link" type="button">Premium</button>
+                                </li>
+                                <form action="#" th:action="@{/logout}" method="POST">
+                                    <li class="header__account-list-item">
+
+                                        <i class="fa-solid fa-right-from-bracket header__account-icon"></i>
+                                        <button class="header__account-item-link" >Log Out</button>
+
+                                    </li>
+                                </form>
+                            </ul>
+                        </li>
+
+                        <li class="header__nav-button-list" th:unless="${userIn}">
+                            <div class="header__nav-button-login">
+                                <a th:href="@{http://localhost:8080/Login}" class="header__nav-button-login-title">Login</a>
+                            </div>
+                            <div class="header__nav-button-resign">
+                                <a th:href="@{http://localhost:8080/Register}" class="header__nav-button-resign-title">Register</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                </nav>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container background-color">
+        <div class="grid">
+            <div class="grid__row-2 ">
+
+            </div>
+
+            <div class="grid__row-6 ">
+                <div class="container__post">
+                    <div class="container__post-list-content">
+                        <div class="container__post-title">
+                            <span class="container__post-title-header">Create a Post</span>
+                        </div>
+
+                        <form th:action="@{/Post_Up}" th:object="${newpost}" method="post">
+
+                        <div class="container__post-kind">
+                            <select  th:field="*{language}" id="container__post-kind-select" class="container__post-kind-select" >
+                                <option value="English" >English</option>
+                                <option value="China">China</option>
+                                <option value="Japan">Japan</option>
+                            </select>
+
+                        </div>
+                        <div class="container__post-content-up">
+                            <div class="container__content-header">
+                                <div class="container__content-header-item container__content-header-item--choose">
+                                    <i class="fa-solid fa-list container__content-header-icon"></i>
+                                    <span class="container__content-header-title">Post</span>
+                                </div>
+                               <!-- <div class="container__content-header-item">
+                                    <i class="fa-solid fa-list container__content-header-icon"></i>
+                                    <span class="container__content-header-title">Post</span>
+                                </div>-->
+                            </div>
+                            <div class="container__content-title">
+                                <input  class="container__content-title-header" th:field="*{title}" placeholder="Title" required maxlength="100"></input>
+                            </div>
+                            <div class="container__content-context">
+                                <div class="container__content-context-setting">
+                                 <!--   <i class="fa-solid fa-b container__content-icon" onclick="formatText('bold')"></i>
+                                    <i class="fa-solid fa-italic container__content-icon" onclick="formatText('italic')"></i>
+                                    <i class="fa-solid fa-underline container__content-icon" onclick="formatText('underline')"></i> -->
+                                </div>
+                                <textarea  class="container__content-context-title" th:field="*{content}" contenteditable="true" placeholder="Text" required maxlength="5000"></textarea>
+
+                            </div>
+                            <div class="container__content-context-more">
+                                <div class="container__content-more-list">
+                                    <i class="fa-solid fa-add container__content-context-name"></i>
+                                    <i class="fa-solid fa-image container__content-context-icon"></i>
+                                </div>
+                               <!--  <div class="container__content-more-list">
+                                    <i class="fa-solid fa-add container__content-context-name"></i>
+                                    <i class="fa-solid fa-image container__content-context-icon"></i>
+                                </div>-->
+                            </div>
+                            <div class="container__post-up">
+                                <BUTTON class="container__post-up-title">Post</BUTTON>
+                            </div>
+
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid__row-4">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

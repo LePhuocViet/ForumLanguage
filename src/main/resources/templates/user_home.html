@@ -1,0 +1,505 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>Forum Language</title>
+    <link rel="icon" th:href="@{/img/F.png}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/font/fontawesome-free-6.4.0-web/css/all.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap}" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<div class="app">
+    <div class="header">
+        <div class="grid">
+            <div class="header__nav-top">
+                <nav class="header__nav">
+                    <ul class="header__nav-list">
+
+                        <li class="header__nav-list-img header__nav-list-item--cursor ">
+                            <img th:src="@{/img/F.png}" class="header__logo-img">
+
+                        </li>
+                        <li class="header__nav-list-name header__nav-list-item--cursor ">
+                            <h2 class="header__nav-list-title"><a class="header__nav-list-title" th:href="@{/Home}"> FORUM LANGUAGES</a></h2>
+                        </li>
+
+                    </ul>
+                    <ul class="header__nav-list header__nav-list-flex">
+                        <form id="search" th:action="@{/Search}" method="get">
+                            <div class="header__nav-search">
+                                <i class="fa-solid fa-magnifying-glass header__nav-search-icon"></i>
+                                <input  id="inputField" name="title" onkeydown="checkEnter(event)" type="text" placeholder="Search Post" class="header__nav-list-search">
+                            </div>
+                        </form>
+                    </ul>
+                    <ul class="header__nav-list">
+                        <form th:action="@{/Post}" method="Get">
+                            <button class="header__nav-list-post header__nav-list-item--cursor">
+                                <i class="fa-regular fa-add header__nav-post-icon"></i>
+                                <span>Create</span>
+                            </button>
+                        </form>
+
+                        <li class="header__nav-list-bell header__nav-list-item--cursor">
+
+                            <i class="header__nav-icon fa-regular fa-bell"></i>
+                        </li>
+                        <li class="header__nav-list-account" th:if="${userIn}">
+                            <img th:src="@{/img/F.png}" class="header__account-avatar header__nav-list-account header__nav-icon" alt="">
+                            <ul class="header__account-list header__nav-list-item--cursor">
+                                <Form th:action="@{/User}" th:object="${UserDto}" method="get">
+                                    <li class="header__account-list-item">
+                                        <input type="hidden" name="u" th:value="${UserDto.usernumber}">
+                                        <i class="fa-regular fa-user header__account-icon"></i>
+                                        <button class="header__account-item-link">View Profile</button>
+                                    </li>
+                                </Form>
+                                <li class="header__account-list-item">
+                                    <i class="fa-regular fa-star header__account-icon"></i>
+                                    <button class="header__account-item-link" type="button">Membership Account</button>
+                                </li>
+                                <form th:action="@{/Setting}" method="Get">
+                                    <li class="header__account-list-item">
+                                        <i class="fa-solid fa-gear header__account-icon"></i>
+                                        <button class="header__account-item-link" >Settings</button>
+                                    </li>
+                                </form>
+                                <li class="header__account-list-item">
+                                    <i class="fa-regular fa-face-grin-stars header__account-icon"></i>
+                                    <button class="header__account-item-link" type="button">Premium</button>
+                                </li>
+                                <form action="#" th:action="@{/logout}" method="POST">
+                                    <li class="header__account-list-item">
+
+                                        <i class="fa-solid fa-right-from-bracket header__account-icon"></i>
+                                        <button class="header__account-item-link" >Log Out</button>
+
+                                    </li>
+                                </form>
+                            </ul>
+                        </li>
+
+                        <li class="header__nav-button-list" th:unless="${userIn}">
+                            <div class="header__nav-button-login">
+                                <a th:href="@{http://localhost:8080/Login}" class="header__nav-button-login-title">Login</a>
+                            </div>
+                            <div class="header__nav-button-resign">
+                                <a th:href="@{http://localhost:8080/Register}" class="header__nav-button-resign-title">Register</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                </nav>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="grid">
+            <div class="grid__row-2"></div>
+            <div class="grid__row-8">
+                <div class="container__user-post">
+                    <div th:object="${Useru}">
+                    <div class="container__user-img">
+                        <img class="container__user-picture" th:src="@{/img/F.png}" alt="">
+                        <span class="container__user-name" th:text="${Useru.name}">Lê Văn Quang</span>
+                        <div th:if="${Useru.usernumber == unumber}">
+                        <button class="container__user-change"  id="user__model" title="Change">Change</button>
+                        </div>
+                    </div>
+                        </div>
+                    <div class="container__content container__content-user">
+                        <div th:each="post : ${PostUser}">
+                        <form th:action="@{/Posts}" method="GET" class="postWatch">
+                        <div class="container__content-post" >
+                            <div class="container__post-list ">
+                                <input type="hidden" name="p" th:value="${post.postname}">
+                                <div class="container__post-infor">
+                                    <div id="userWatch" th:data-user="${post.usernumber}">
+                                        <div loading="lazy" class="container__post-infor-item">
+                                            <img class="container__infor-img" src="./img/F.png" alt="">
+                                            <span class="container__infor-name" th:text="${post.name}">Forum Language</span>
+                                            <span> - </span>
+                                            <span class="container__infor-time" th:text="${post.timepost}">2 hours</span>
+                                            <span> - </span>
+                                            <span class="container__infor-language" th:text="${post.language}">English</span>
+                                        </div>
+                                    </div>
+                                    <div class="container__post-infor-item">
+                                        <i  id="moreOptions" class="container__infor-more fa-solid fa-ellipsis"></i>
+                                        <div  id="moreOptionsList" class="container__infor-more-list">
+                                            <div th:if="${Useru.usernumber == unumber}">
+                                            <div class="container__infor-more-deleted user__deletedPost">Deleted</div>
+                                            <div class="container__infor-more-edit">Edit</div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="container__post-header">
+                                    <span class="container__header-title"  th:text="${post.title}">Help me</span>
+                                </div>
+                                <div class="container__post-content">
+                            <span class="container__content-title" th:utext="${post.content}">Renovating the restaurant will attract more customers.<br>
+                                A. Renovation <br>
+                                B. Renovating <br>
+                                C. Renovated <br>
+                                D. To renovating</span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        </form>
+                            <div th:if="${userIn}">
+                            <form class="likeForm" th:action="@{/like-post}" method="POST">
+                                <input type="hidden" name="lp" th:value="${post.postname}">
+                                <div th:each="detail : ${postsDetailList}">
+                                    <div th:if="${detail.postname == post.postname}">
+
+                                        <div class="container__post-interact" th:with="isLiked=${postlike.contains(post.postname)}">
+                                            <div th:if="${isLiked}">
+                                                <button class="container__interact-like likesubmit liked">
+                                                    <i class="container__interact-icon fa-solid fa-heart"></i>
+                                                    <span class="container__interact-number" th:text="${detail.likecount}">100</span>
+                                                </button>
+                                            </div>
+
+                                            <div th:unless="${isLiked}">
+
+                                                <button class="container__interact-like likesubmit">
+                                                    <i class="container__interact-icon fa-solid fa-heart"></i>
+                                                    <span class="container__interact-number" th:text="${detail.likecount}">100</span>
+                                                </button>
+                                            </div>
+                                            <div class="container__interact-comment " th:data-post="${post.postname}">
+                                                <i class="container__interact-icon fa-solid fa-comment"></i>
+                                                <span class="container__interact-number" th:Text="${detail.commentcount}">100</span>
+                                            </div>
+                                            <div class="container__interact-share">
+                                                <i class="container__interact-icon fa-solid fa-share" ></i>
+
+                                            </div>
+                                            <div class="container__interact-share-link-find">
+                                                <div class="container__interact-share-link">
+                                                    <span class="container__interact-s"  th:text="'http://localhost:8080/Posts?p=' + ${post.postname}"></span>
+                                                    <div class="container__interact-s-coppy">Coppy</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </form>
+                            </div>
+                            <div th:unless="${userIn}">
+
+                                <div th:each="detail : ${postsDetailList}">
+                                    <div th:if="${detail.postname == post.postname}">
+                                        <div class="container__post-interact">
+                                            <form class="likelogin" th:action="@{/Login}" method="get">
+                                                <button class="container__interact-like">
+                                                    <i class="container__interact-icon fa-solid fa-heart"></i>
+                                                    <span class="container__interact-number" th:text="${detail.likecount}">100</span>
+                                                </button>
+                                            </form>
+                                            <div class="container__interact-comment" th:data-post="${post.postname}">
+                                                <i class="container__interact-icon fa-solid fa-comment"></i>
+                                                <span class="container__interact-number" th:Text="${detail.commentcount}">100</span>
+                                            </div>
+                                            <div class="container__interact-share">
+                                                <i class="container__interact-icon fa-solid fa-share" ></i>
+
+                                            </div>
+                                            <div class="container__interact-share-link-find">
+                                                <div class="container__interact-share-link">
+                                                    <span class="container__interact-s"  th:text="'http://localhost:8080/Posts?p=' + ${post.postname}"></span>
+                                                    <div class="container__interact-s-coppy">Coppy</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        <form id="deleteForm" th:action="@{/deletePost}" method="get">
+                        <input  type="hidden" name="dp" th:value="${post.postname}">
+
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid__row-2"></div>
+        </div>
+    </div>
+</div>
+</body>
+<div id="model-setting" class="model__setting">
+    <div class="model__setting-content">
+        <div th:object="${Useru}">
+        <div class="model__setting-list">
+            <div class="model__change-img">
+                <img class="model__img" th:src="@{/img/F.png}" alt="">
+                <button class="model__img-button">Upload</button>
+            </div>
+            <form th:action="@{save-user}" method="post">
+            <div class="model__change-name">
+                <span class="model__change-name-ps">Change Name</span>
+                <input type="hidden" name="ub" th:value="${Useru.usernumber}">
+                <input class="model__name" name="un" type="text" th:placeholder="${Useru.name}">
+            </div>
+
+            <div class="model__change-save">
+                <button class="model__change-submit">Save</button>
+                <button class="model__change-submit close">Cancel</button>
+            </div>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+<div id="model-YN" class="model-YN">
+    <div class="model__setting-content model__setting-content-YN">
+        <div class="model__setting-list">
+
+            <div class="model__change-name">
+                <span class="model__change-name-ps">ARE YOU SURE ?</span>
+            </div>
+            <div class="model__change-save">
+                <button class="model__change-submit closes">No</button>
+                <button class="model__change-submit model__change-deleted-post">Yes</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    function submitLikeForm() {
+        const form = document.querySelector('.likelogin');
+        form.submit();
+    }
+    $(document).ready(function() {
+
+     $('.likesubmit').click(function(event) {
+         event.preventDefault();
+
+         const likeButton = $(this).closest('.container__interact-like');
+         const likeCountElement = likeButton.find('.container__interact-number');
+         let likeCount = parseInt(likeCountElement.text());
+
+             const defaultColor = '#e88989';
+            const originalColor = '#ffffff';
+         if (!likeButton.hasClass('liked')) {
+             likeButton.addClass('liked');
+             likeCount += 1;
+                 likeButton.css('background-color',defaultColor  );
+         } else {
+             likeButton.removeClass('liked');
+             likeCount -= 1;
+                likeButton.css('background-color', originalColor);
+         }
+
+
+         likeCountElement.text(likeCount);
+
+         $.ajax({
+             type: "POST",
+             url: $(this).closest('.likeForm').attr("action"),
+             data: $(this).closest('.likeForm').serialize(),
+             success: function(response) {
+             },
+             error: function(xhr, status, error) {
+                 console.error(xhr.responseText);
+             }
+         });
+     });
+       $('.container__interact-comment').click(function() {
+        const postname = $(this).data('post');
+        const url = `/Posts?p=${postname}`;
+        window.location.href = url;
+    });
+ });
+    document.addEventListener('DOMContentLoaded', function() {
+
+        var postContainers = document.querySelectorAll('.container__content-post');
+
+        postContainers.forEach(function(postContainer) {
+            postContainer.addEventListener('click', function() {
+                var form = this.closest('form.postWatch');
+                if (form) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+
+
+      document.addEventListener('DOMContentLoaded', function() {
+          const postInforItems = document.querySelectorAll('.container__post-infor-item');
+          postInforItems.forEach(function(postInfor) {
+              postInfor.addEventListener('click', function(event) {
+                  event.stopPropagation();
+                  const userWatch = this.closest('.container__post-list').querySelector('#userWatch');
+                  const usernumber = userWatch.getAttribute('data-user');
+                  const url = `/User?u=${usernumber}`;
+                  window.location.href = url;
+              });
+          });
+      });
+
+
+     document.addEventListener("DOMContentLoaded", function() {
+        const shareButtons = document.querySelectorAll(".container__interact-share");
+        const shareLinkFinds = document.querySelectorAll(".container__interact-share-link-find");
+        const copyButtons = document.querySelectorAll(".container__interact-s-coppy");
+        const textsToCopy = document.querySelectorAll(".container__interact-s");
+
+        shareButtons.forEach((shareButton, index) => {
+            const shareLinkFind = shareLinkFinds[index];
+            shareButton.addEventListener("click", function(event) {
+                if (shareLinkFind.style.display === "none" || !shareLinkFind.style.display) {
+                    shareLinkFind.style.display = "block";
+                } else {
+                    shareLinkFind.style.display = "none";
+                }
+                event.stopPropagation();
+            });
+        });
+
+        document.addEventListener("click", function() {
+            shareLinkFinds.forEach(shareLinkFind => {
+                shareLinkFind.style.display = "none";
+            });
+        });
+
+        shareLinkFinds.forEach(shareLinkFind => {
+            shareLinkFind.addEventListener("click", function(event) {
+                event.stopPropagation();
+            });
+        });
+
+        copyButtons.forEach((copyButton, index) => {
+            const textToCopy = textsToCopy[index];
+            copyButton.addEventListener("click", function() {
+                const text = textToCopy.textContent;
+                navigator.clipboard.writeText(text).then(function() {
+                    console.log("Text copied to clipboard: ", text);
+                }).catch(function(err) {
+                    console.error("Could not copy text: ", err);
+                });
+            });
+        });
+    });
+
+
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+   document.querySelectorAll('.container__infor-more').forEach(function(moreOptionsIcon) {
+       moreOptionsIcon.addEventListener('click', function(event) {
+           event.preventDefault();
+           event.stopPropagation();
+           let moreOptionsList = this.nextElementSibling;
+           if (moreOptionsList.style.display === 'block') {
+               moreOptionsList.style.display = 'none';
+           } else {
+               moreOptionsList.style.display = 'block';
+           }
+       });
+   });
+
+
+   var moreOptions = document.getElementById("moreOptions");
+   var moreOptionsList = document.getElementById("moreOptionsList");
+   if (moreOptions && moreOptionsList) {
+       moreOptions.addEventListener('click', function(event) {
+           event.stopPropagation();
+           moreOptionsList.style.display = 'block';
+       });
+
+       document.addEventListener('click', function(event) {
+           if (!moreOptions.contains(event.target)) {
+               moreOptionsList.style.display = 'none';
+           }
+       });
+       moreOptionsList.addEventListener('click', function(event) {
+           event.stopPropagation();
+       });
+   }
+});
+
+      var modal = document.getElementById("model-setting");
+  var openDeleteModalButton = document.getElementById("user__model");
+  var span = document.getElementsByClassName("close")[0];
+      openDeleteModalButton.onclick = function() {
+          modal.style.display = "block";
+      }
+      span.onclick = function() {
+          modal.style.display = "none";
+      }
+      window.onclick = function(event) {
+          if (event.target == modal) {
+          modal.style.display = "none";
+      }
+      }
+
+
+
+   document.addEventListener('DOMContentLoaded', function() {
+
+    document.querySelectorAll('.user__deletedPost').forEach(function(deletedPostBtn) {
+        deletedPostBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+
+            var moreOptionsDeleted = document.getElementById("model-YN");
+            moreOptionsDeleted.style.display = 'block';
+
+
+            var postName = this.closest('.container__content-post').querySelector('input[name="p"]').value;
+            document.querySelector('#deleteForm input[name="dp"]').value = postName;
+
+            document.addEventListener('click', function(event) {
+                if (!moreOptionsDeleted.contains(event.target)) {
+                    moreOptionsDeleted.style.display = 'none';
+                }
+            });
+
+
+            var closeButton = document.querySelector(".closes");
+            if (closeButton) {
+                closeButton.addEventListener('click', function(event) {
+                    moreOptionsDeleted.style.display = 'none';
+                });
+            }
+
+
+            var postDeletedButton = document.querySelector(".model__change-deleted-post");
+            if (postDeletedButton) {
+                postDeletedButton.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    document.getElementById("deleteForm").submit();
+                });
+            }
+        });
+    });
+});
+</script>
+
+</html>
