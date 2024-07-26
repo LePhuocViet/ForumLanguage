@@ -141,6 +141,11 @@ public class AccountImplement implements AccountService {
         return false;
     }
 
+    @Override
+    public List<Account> fillAllAccount() {
+        return accountRepository.findAll();
+    }
+
     private boolean isValidEmail(String email) {
         String emailRegex = "[a-zA-Z0-9_+&*-]+@gmail.com";
         Pattern pattern = Pattern.compile(emailRegex);

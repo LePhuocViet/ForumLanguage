@@ -123,6 +123,11 @@ public class UserImplement implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public List<User> fillAll() {
+        return userRepository.findAll();
+    }
+
     private boolean isValidEmail(String email) {
         String emailRegex = "[a-zA-Z0-9_+&*-]+@gmail.com";
         Pattern pattern = Pattern.compile(emailRegex);

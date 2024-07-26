@@ -1,6 +1,7 @@
 package com.ForumLanguage.Forum.service;
 
 import com.ForumLanguage.Forum.dto.UsersDto;
+import com.ForumLanguage.Forum.enity.User;
 
 import java.util.List;
 
@@ -21,6 +22,6 @@ public interface UserService {
 
     void saveUser(String username,String name);
 
-
+    List<User> fillAll();
 
 }
