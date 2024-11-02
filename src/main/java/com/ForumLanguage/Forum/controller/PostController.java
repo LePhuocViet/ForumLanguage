@@ -18,6 +18,9 @@ public class PostController {
     @Autowired
     PostService postService;
 
+
+
+
     @GetMapping("/Post")
     public String postUp(Model model, Authentication authentication){
         boolean userIn = authentication != null && authentication.isAuthenticated() ;

@@ -117,9 +117,25 @@ public class HomeController {
     public String kind(HttpServletRequest httpServletRequest,Authentication authentication,Model model){
         List<PostDto> postDtoList = postService.findPostByLanguage(httpServletRequest.getParameter("language"));
         boolean userIn = authentication != null && authentication.isAuthenticated() ;
+        boolean userAdmin = false;
         if(userIn != false) {
             UsersDto usersDto = userService.FindUserDtos(authentication.getName());
             model.addAttribute("UserDto" ,usersDto);
+            List<String> postlike = postService.findPostLike(authentication.getName());
+            model.addAttribute("postlike",postlike);
+            List<String> listAuthentication = new ArrayList<>();
+            listAuthentication.addAll(
+                    authentication.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .collect(Collectors.toList())
+            );
+            userAdmin = accountService.checkAuthentication(listAuthentication);
+            model.addAttribute("userAdmin",userAdmin);
+        } else{
+            List<String> postlike = new ArrayList<>();
+            postlike.add(1+"");
+            model.addAttribute("postlike",postlike);
+
         }
         List<PostDetailDto> postDetailDtosList = postService.findPostDetail();
         PostDto postDto = new PostDto();
@@ -155,10 +171,7 @@ public class HomeController {
             model.addAttribute("postlike",postlike);
 
         }
-        if(userIn != false) {
-            UsersDto usersDto = userService.FindUserDtos(authentication.getName());
-            model.addAttribute("UserDto" ,usersDto);
-        }
+
         List<PostDetailDto> postDetailDtosList = postService.findPostDetail();
         PostDto postDto = new PostDto();
         model.addAttribute("languageCss",httpServletRequest.getParameter("find"));
