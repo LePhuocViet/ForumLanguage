@@ -34,7 +34,7 @@ public class AccountSecurity {
                         .requestMatchers("/Admin/**").hasRole("ADMIN")
                         .requestMatchers("/Post","/Setting").hasRole("USER")
                         .requestMatchers("**","/Home").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/Login")
