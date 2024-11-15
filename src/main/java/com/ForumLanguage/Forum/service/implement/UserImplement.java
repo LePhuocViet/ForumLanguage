@@ -53,7 +53,7 @@ public class UserImplement implements UserService {
     public void save(UsersDto usersDto,String name) {
         Optional<Account> accountId = accountRepository.findIdByUsername(name);
         Account account = accountId.get();
-       User userId = userRepository.findIdByIdAccount(account.getId());
+        User userId = userRepository.findIdByIdAccount(account.getId());
 
         User username = userRepository.findUserByIdAccount(userId.getIdAccount());
         username.setSex(usersDto.getSex());

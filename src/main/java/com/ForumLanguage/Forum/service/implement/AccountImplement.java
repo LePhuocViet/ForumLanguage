@@ -48,13 +48,13 @@ public class AccountImplement implements AccountService {
         }else if(accountsDto.getUsername().length() <=  5 || accountsDto.getUsername().length() >= 10){
             throw new AccountException("Username must be at least 5 characters long and at max 10");
         } else if(!accountsDto.getUsername().matches("^[a-zA-Z0-9_]*$")){
-           throw new AccountException("Username is wrong");
+           throw new AccountException("Must not contain special characters");
        }
 
         if(!accountsDto.getPassword().matches("^[a-zA-Z0-9_]*$") ){
-            throw new AccountException("Password is wrong");
-        } else if(accountsDto.getPassword().length() <=  8 || accountsDto.getPassword().length() >= 20){
-            throw new AccountException("Password must be at least 8 characters long and at max 20");
+            throw new AccountException("Must not contain special characters");
+        } else if(accountsDto.getPassword().length() <=  8 ){
+            throw new AccountException("Password must be at least 8 characters");
         }
         Optional<User> byEmailCheck= userRepository.findByEmail(email);
         if(byEmailCheck.isPresent()){

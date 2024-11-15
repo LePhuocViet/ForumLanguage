@@ -49,14 +49,14 @@
                     <div class="notice" th:if="${param.error != null
                     and ((param.error.contains('Username is exist')
                      or param.error.contains('Username must be at least 5 characters long and at max 10'))
-                     or param.error.contains('Username is wrong'))
+                     or param.error.contains('Must not contain special characters'))
                      }">
                         <span class="error-message" th:text="${param.error}"></span>
                     </div>
                     <input class="container__login-name-input" type="text"  th:field="*{username}" name="username" placeholder="UserName" required>
                 </div>
                 <div class="container__login-password">
-                    <div class="notice" th:if="${param.error != null and (param.error.contains('Password must be at least 8 characters long and at max 20') or param.error.contains('Password is wrong'))}">
+                    <div class="notice" th:if="${param.error != null and (param.error.contains('Password must be at least 8 characters') or param.error.contains('Must not contain special characters'))}">
                         <span class="error-message" th:text="${param.error}"></span>
                     </div>
                     <input  class="container__login-password-input" type="password"  th:field="*{password}" name="password" placeholder="PassWord" required >
