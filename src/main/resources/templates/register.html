@@ -53,19 +53,19 @@
                      }">
                         <span class="error-message" th:text="${param.error}"></span>
                     </div>
-                    <input class="container__login-name-input" type="text"  th:field="*{username}" name="username" placeholder="UserName" required>
+                    <input class="container__login-name-input" type="text"  th:field="*{username}" name="username" placeholder="UserName">
                 </div>
                 <div class="container__login-password">
                     <div class="notice" th:if="${param.error != null and (param.error.contains('Password must be at least 8 characters') or param.error.contains('Must not contain special characters'))}">
                         <span class="error-message" th:text="${param.error}"></span>
                     </div>
-                    <input  class="container__login-password-input" type="password"  th:field="*{password}" name="password" placeholder="PassWord" required >
+                    <input  class="container__login-password-input" type="password"  th:field="*{password}" name="password" placeholder="PassWord" >
                 </div>
                 <div class="container__login-password">
                     <div class="notice" th:if="${param.error != null and param.error.contains('Password does not match')}">
                         <span class="error-message" th:text="${param.error}"></span>
                     </div>
-                    <input  class="container__login-password-input" type="password"  name="repassword" placeholder="RePassWord" required>
+                    <input  class="container__login-password-input" type="password"  name="repassword" placeholder="RePassWord">
                 </div>
                 <div class="container__login-password">
                     <div class="notice" th:if="${param.error != null and ((param.error.contains('Email is exist')
@@ -73,7 +73,7 @@
 
                     <span class="error-message" th:text="${param.error}"></span>
                     </div>
-                    <input  id="emailInput" class="container__login-password-input" type="text"  name="email" placeholder="Email" required>
+                    <input  id="emailInput" class="container__login-password-input" type="text"  name="email" placeholder="Email">
                 </div>
 
                 <div class="container__resign-email">
@@ -84,7 +84,7 @@
                         <span class="error-message" th:text="${param.error}"></span>
                     </div>
                     <div>
-                    <input  class="container__resign-email-input" type="text"  name="code" placeholder="Code" required>
+                    <input  class="container__resign-email-input" type="text"  name="code" placeholder="Code">
                     <a class="container__resign-email-send" onclick="sendEmail()">Send</a>
                     </div>
                 </div>
