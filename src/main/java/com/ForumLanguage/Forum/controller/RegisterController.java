@@ -45,7 +45,7 @@ public class RegisterController {
     }
 
 
-    @PostMapping("/Authentication")
+    @PostMapping("/register")
     public String Authentication(@ModelAttribute("newAccount") AccountsDto accountsDto, HttpServletRequest httpServletRequest){
         accountService.checkPassword(accountsDto,httpServletRequest.getParameter("repassword"));
         accountService.CreateAccount(accountsDto,httpServletRequest.getParameter("email"),httpServletRequest.getParameter("code"));
