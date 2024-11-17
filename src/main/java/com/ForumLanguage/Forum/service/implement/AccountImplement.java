@@ -53,7 +53,7 @@ public class AccountImplement implements AccountService {
 
         if(!accountsDto.getPassword().matches("^[a-zA-Z0-9_]*$") ){
             throw new AccountException("Must not contain special characters");
-        } else if(accountsDto.getPassword().length() <=  8 ){
+        } else if(accountsDto.getPassword().length() <  8 ){
             throw new AccountException("Password must be at least 8 characters");
         }
         Optional<User> byEmailCheck= userRepository.findByEmail(email);
