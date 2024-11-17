@@ -49,7 +49,7 @@ public class RegisterController {
     public String Authentication(@ModelAttribute("newAccount") AccountsDto accountsDto, HttpServletRequest httpServletRequest){
         accountService.checkPassword(accountsDto,httpServletRequest.getParameter("repassword"));
         accountService.CreateAccount(accountsDto,httpServletRequest.getParameter("email"),httpServletRequest.getParameter("code"));
-        return "redirect:/Login";
+        return "login";
 
     }
 
