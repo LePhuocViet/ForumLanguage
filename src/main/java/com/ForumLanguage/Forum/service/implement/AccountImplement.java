@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -118,9 +119,11 @@ public class AccountImplement implements AccountService {
         newUser.setEmail(email);
         newUser.setSex("None");
         newUser.setLanguage("English");
+
         int RandomAccNumber = (int) (10000L + new Random().nextInt(900000));
         int RandomAccNumberq2 = (int) (1000L + new Random().nextInt(9000));
         newUser.setName("#user" + RandomAccNumber +RandomAccNumberq2);
+        newUser.setUsernumber(RandomAccNumber);
         return newUser;
     }
 
